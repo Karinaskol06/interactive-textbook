@@ -3,6 +3,7 @@ using InteractiveLanguageLearning.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace InteractiveLanguageLearning.Services
@@ -31,10 +32,21 @@ namespace InteractiveLanguageLearning.Services
 
         public Language GetLanguageById(int id)
         {
-            return _context.Languages
+            using var context = new ApplicationDbContext();
+            return context.Languages
                 .Include(l => l.Sections)
                 .ThenInclude(s => s.Topics)
                 .FirstOrDefault(l => l.Id == id);
+        }
+
+        public Language GetLanguageWithSectionsAndTopics(int languageId)
+        {
+            using var context = new ApplicationDbContext();
+            return context.Languages
+                .Where(l => l.Id == languageId)
+                .Include(l => l.Sections)
+                .ThenInclude(s => s.Topics.OrderBy(t => t.OrderIndex))
+                .FirstOrDefault();
         }
     }
 
@@ -42,6 +54,26 @@ namespace InteractiveLanguageLearning.Services
     {
         public ExerciseService()
         {
+        }
+
+        public bool HasVocabularyExercises(int topicId)
+        {
+            using var context = new ApplicationDbContext();
+            var count = context.VocabularyExercises.Count(ve => ve.TopicId == topicId);
+            Debug.WriteLine($"Vocabulary exercises for topic {topicId}: {count}");
+            return count > 0;
+        }
+
+        public bool HasReadingExercises(int topicId)
+        {
+            using var context = new ApplicationDbContext();
+            return context.ReadingExercises.Any(re => re.TopicId == topicId);
+        }
+
+        public bool HasGrammarExercises(int topicId)
+        {
+            using var context = new ApplicationDbContext();
+            return context.GrammarExercises.Any(ge => ge.TopicId == topicId);
         }
 
         public List<VocabularyExercise> GetVocabularyExercisesByTopic(int topicId)
@@ -162,12 +194,13 @@ namespace InteractiveLanguageLearning.Services
 
             var user = context.Users
                 .Include(u => u.CurrentLanguage)
+                .Include(u => u.Role) // Додаємо завантаження ролі
                 .FirstOrDefault(u => u.Username == username && u.PasswordHash == password);
 
             return user;
         }
 
-        public User Register(string username, string email, string password)
+        public User Register(string username, string email, string password, int roleId = 1)
         {
             using var context = new ApplicationDbContext();
 
@@ -179,68 +212,301 @@ namespace InteractiveLanguageLearning.Services
                 Email = email,
                 PasswordHash = password,
                 CurrentLanguageId = defaultLanguage?.Id,
+                RoleId = roleId,
                 CreatedAt = DateTime.Now
             };
 
             context.Users.Add(user);
             context.SaveChanges();
 
-            return user;
+            return context.Users
+        .Include(u => u.CurrentLanguage)
+        .Include(u => u.Role)
+        .FirstOrDefault(u => u.Id == user.Id);
+        }
+
+        public void UpdateUserRole(int userId, int roleId)
+        {
+            using var context = new ApplicationDbContext();
+            var user = context.Users.Find(userId);
+            if (user != null)
+            {
+                user.RoleId = roleId;
+                context.SaveChanges();
+            }
+        }
+
+        public List<UserRole> GetAllRoles()
+        {
+            using var context = new ApplicationDbContext();
+            return context.UserRoles.ToList();
         }
 
         public UserStats GetUserStats(int userId)
         {
             using var context = new ApplicationDbContext();
 
-            try
+            var totalExercises = context.VocabularyExercises.Count() +
+                               context.ReadingExercises.Count() +
+                               context.GrammarExercises.Count();
+
+            var completedExercises = context.UserProgress
+                .Count(up => up.UserId == userId && up.Completed);
+
+            var totalScore = context.UserProgress
+                .Where(up => up.UserId == userId && up.Completed)
+                .Sum(up => up.Score);
+
+            return new UserStats
             {
-                Console.WriteLine($"=== GetUserStats for UserId: {userId} ===");
-
-                var totalExercises = context.VocabularyExercises.Count() +
-                                   context.ReadingExercises.Count() +
-                                   context.GrammarExercises.Count();
-
-                var completedExercises = context.UserProgress
-                    .Count(p => p.UserId == userId && p.Completed);
-
-                var totalScore = context.UserProgress
-                    .Where(p => p.UserId == userId)
-                    .Sum(p => p.Score);
-
-                Console.WriteLine($"Total exercises: {totalExercises}");
-                Console.WriteLine($"Completed exercises: {completedExercises}");
-                Console.WriteLine($"Total score: {totalScore}");
-
-                var allProgress = context.UserProgress
-                    .Where(p => p.UserId == userId)
-                    .ToList();
-
-                Console.WriteLine($"All progress records for user: {allProgress.Count}");
-                foreach (var prog in allProgress)
-                {
-                    Console.WriteLine($"  ExerciseId: {prog.ExerciseId}, Type: {prog.ExerciseType}, Completed: {prog.Completed}, Score: {prog.Score}");
-                }
-
-                return new UserStats
-                {
-                    TotalExercises = totalExercises,
-                    CompletedExercises = completedExercises,
-                    TotalScore = totalScore
-                };
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error in GetUserStats: {ex.Message}");
-                return new UserStats(); 
-            }
+                TotalExercises = totalExercises,
+                CompletedExercises = completedExercises,
+                TotalScore = totalScore
+                // ProgressPercentage обчислюється автоматично - не потрібно присвоювати
+            };
         }
 
-        public int GetCompletedExercisesByLanguage(int userId, int languageId)
+        public UserStats GetUserStatsByLanguage(int userId, int languageId)
         {
             using var context = new ApplicationDbContext();
 
-            return context.UserProgress
-                .Count(p => p.UserId == userId && p.Completed);
+            // Отримуємо всі вправи для конкретної мови
+            var totalExercises = context.VocabularyExercises
+                .Count(ve => ve.Topic.Section.LanguageId == languageId) +
+                context.ReadingExercises
+                .Count(re => re.Topic.Section.LanguageId == languageId) +
+                context.GrammarExercises
+                .Count(ge => ge.Topic.Section.LanguageId == languageId);
+
+            // Отримуємо виконані вправи для конкретної мови
+            var completedExercises = context.UserProgress
+                .Where(up => up.UserId == userId && up.Completed)
+                .Join(context.VocabularyExercises,
+                    up => up.ExerciseId,
+                    ve => ve.Id,
+                    (up, ve) => new { up, ve })
+                .Count(x => x.ve.Topic.Section.LanguageId == languageId) +
+
+                context.UserProgress
+                .Where(up => up.UserId == userId && up.Completed)
+                .Join(context.ReadingExercises,
+                    up => up.ExerciseId,
+                    re => re.Id,
+                    (up, re) => new { up, re })
+                .Count(x => x.re.Topic.Section.LanguageId == languageId) +
+
+                context.UserProgress
+                .Where(up => up.UserId == userId && up.Completed)
+                .Join(context.GrammarExercises,
+                    up => up.ExerciseId,
+                    ge => ge.Id,
+                    (up, ge) => new { up, ge })
+                .Count(x => x.ge.Topic.Section.LanguageId == languageId);
+
+            // Отримуємо загальний бал для конкретної мови
+            var totalScore = context.UserProgress
+                .Where(up => up.UserId == userId && up.Completed)
+                .Join(context.VocabularyExercises,
+                    up => up.ExerciseId,
+                    ve => ve.Id,
+                    (up, ve) => new { up, ve })
+                .Where(x => x.ve.Topic.Section.LanguageId == languageId)
+                .Sum(x => x.up.Score) +
+
+                context.UserProgress
+                .Where(up => up.UserId == userId && up.Completed)
+                .Join(context.ReadingExercises,
+                    up => up.ExerciseId,
+                    re => re.Id,
+                    (up, re) => new { up, re })
+                .Where(x => x.re.Topic.Section.LanguageId == languageId)
+                .Sum(x => x.up.Score) +
+
+                context.UserProgress
+                .Where(up => up.UserId == userId && up.Completed)
+                .Join(context.GrammarExercises,
+                    up => up.ExerciseId,
+                    ge => ge.Id,
+                    (up, ge) => new { up, ge })
+                .Where(x => x.ge.Topic.Section.LanguageId == languageId)
+                .Sum(x => x.up.Score);
+
+            return new UserStats
+            {
+                TotalExercises = totalExercises,
+                CompletedExercises = completedExercises,
+                TotalScore = totalScore
+                // ProgressPercentage обчислюється автоматично - не потрібно присвоювати
+            };
+        }
+
+        public Dictionary<Language, UserStats> GetAllLanguagesStats(int userId)
+        {
+            using var context = new ApplicationDbContext();
+            var languages = context.Languages.ToList();
+            var stats = new Dictionary<Language, UserStats>();
+
+            foreach (var language in languages)
+            {
+                stats[language] = GetUserStatsByLanguage(userId, language.Id);
+            }
+
+            return stats;
+        }
+    }
+
+    public class TeacherService
+    {
+        public List<Topic> GetAllTopicsWithExercises()
+        {
+            using var context = new ApplicationDbContext();
+            return context.Topics
+                .Include(t => t.Section)
+                .ThenInclude(s => s.Language)
+                .Include(t => t.VocabularyExercises)
+                .Include(t => t.ReadingExercises)
+                .Include(t => t.GrammarExercises)
+                .OrderBy(t => t.Section.Language.Name)
+                .ThenBy(t => t.Section.Name)
+                .ThenBy(t => t.OrderIndex)
+                .ToList();
+        }
+
+        /*public void AddVocabularyExercise(VocabularyExercise exercise)
+        {
+            using var context = new ApplicationDbContext();
+            context.VocabularyExercises.Add(exercise);
+            context.SaveChanges();
+        }*/
+
+        public void AddReadingExercise(ReadingExercise exercise)
+        {
+            using var context = new ApplicationDbContext();
+            context.ReadingExercises.Add(exercise);
+            context.SaveChanges();
+        }
+
+        public void AddGrammarExercise(GrammarExercise exercise)
+        {
+            using var context = new ApplicationDbContext();
+            context.GrammarExercises.Add(exercise);
+            context.SaveChanges();
+        }
+
+        public void AddVocabularyExercise(VocabularyExercise exercise)
+        {
+            using var context = new ApplicationDbContext();
+            try
+            {
+                Debug.WriteLine($"=== AddVocabularyExercise ===");
+                Debug.WriteLine($"TopicId: {exercise.TopicId}");
+                Debug.WriteLine($"Question: {exercise.Question}");
+                Debug.WriteLine($"CorrectAnswer: {exercise.CorrectAnswer}");
+                Debug.WriteLine($"Options: {exercise.Options}");
+                Debug.WriteLine($"Explanation: {exercise.Explanation}");
+
+                context.VocabularyExercises.Add(exercise);
+                var changes = context.SaveChanges();
+
+                Debug.WriteLine($"SaveChanges affected {changes} records");
+                Debug.WriteLine($"New exercise ID: {exercise.Id}");
+                Debug.WriteLine("=== AddVocabularyExercise SUCCESS ===");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"=== AddVocabularyExercise ERROR ===");
+                Debug.WriteLine($"Error: {ex.Message}");
+                Debug.WriteLine($"Inner: {ex.InnerException?.Message}");
+                throw;
+            }
+        }
+
+        public void UpdateVocabularyExercise(VocabularyExercise exercise)
+        {
+            using var context = new ApplicationDbContext();
+            var existing = context.VocabularyExercises.Find(exercise.Id);
+            if (existing != null)
+            {
+                existing.Question = exercise.Question;
+                existing.CorrectAnswer = exercise.CorrectAnswer;
+                existing.Options = exercise.Options;
+                existing.Explanation = exercise.Explanation;
+                existing.ImagePath = exercise.ImagePath;
+                context.SaveChanges();
+            }
+        }
+
+        public void UpdateReadingExercise(ReadingExercise exercise)
+        {
+            using var context = new ApplicationDbContext();
+            var existing = context.ReadingExercises.Find(exercise.Id);
+            if (existing != null)
+            {
+                existing.Title = exercise.Title;
+                existing.TextContent = exercise.TextContent;
+                existing.Question = exercise.Question;
+                existing.CorrectAnswer = exercise.CorrectAnswer;
+                existing.Options = exercise.Options;
+                existing.Explanation = exercise.Explanation;
+                context.SaveChanges();
+            }
+        }
+
+        public void UpdateGrammarExercise(GrammarExercise exercise)
+        {
+            using var context = new ApplicationDbContext();
+            var existing = context.GrammarExercises.Find(exercise.Id);
+            if (existing != null)
+            {
+                existing.Title = exercise.Title;
+                existing.Explanation = exercise.Explanation;
+                existing.Question = exercise.Question;
+                existing.CorrectAnswer = exercise.CorrectAnswer;
+                existing.Options = exercise.Options;
+                existing.Example = exercise.Example;
+                context.SaveChanges();
+            }
+        }
+
+        public void DeleteExercise(ExerciseType type, int exerciseId)
+        {
+            using var context = new ApplicationDbContext();
+            switch (type)
+            {
+                case ExerciseType.Vocabulary:
+                    var vocab = context.VocabularyExercises.Find(exerciseId);
+                    if (vocab != null)
+                    {
+                        context.VocabularyExercises.Remove(vocab);
+                        context.SaveChanges();
+                    }
+                    break;
+                case ExerciseType.Reading:
+                    var reading = context.ReadingExercises.Find(exerciseId);
+                    if (reading != null)
+                    {
+                        context.ReadingExercises.Remove(reading);
+                        context.SaveChanges();
+                    }
+                    break;
+                case ExerciseType.Grammar:
+                    var grammar = context.GrammarExercises.Find(exerciseId);
+                    if (grammar != null)
+                    {
+                        context.GrammarExercises.Remove(grammar);
+                        context.SaveChanges();
+                    }
+                    break;
+            }
+        }
+
+        public List<Language> GetAllLanguages()
+        {
+            using var context = new ApplicationDbContext();
+            return context.Languages
+                .Include(l => l.Sections)
+                .ThenInclude(s => s.Topics)
+                .ToList();
         }
     }
 }

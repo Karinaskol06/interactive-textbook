@@ -17,6 +17,7 @@ namespace InteractiveLanguageLearning.Data
         public DbSet<ReadingExercise> ReadingExercises { get; set; }
         public DbSet<GrammarExercise> GrammarExercises { get; set; }
         public DbSet<UserProgress> UserProgress { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -28,6 +29,7 @@ namespace InteractiveLanguageLearning.Data
 
                 optionsBuilder.EnableSensitiveDataLogging();
                 optionsBuilder.EnableDetailedErrors();
+                optionsBuilder.LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information);
             }
         }
 
@@ -74,7 +76,6 @@ namespace InteractiveLanguageLearning.Data
                       .HasForeignKey(t => t.SectionId);
             });
 
-            // Конфігурація для User
             modelBuilder.Entity<User>(entity =>
             {
                 entity.ToTable("Users");
@@ -85,10 +86,20 @@ namespace InteractiveLanguageLearning.Data
                 entity.Property(e => e.PasswordHash).HasColumnName("password_hash").HasMaxLength(255);
                 entity.Property(e => e.CurrentLanguageId).HasColumnName("current_language_id");
                 entity.Property(e => e.CreatedAt).HasColumnName("created_at");
+                entity.Property(e => e.RoleId).HasColumnName("role_id").HasDefaultValue(1);
+
+                entity.Property(e => e.RoleId)
+                      .HasColumnName("role_id")
+                      .HasDefaultValue(1)
+                      .IsRequired(true); 
 
                 entity.HasOne(u => u.CurrentLanguage)
                       .WithMany()
                       .HasForeignKey(u => u.CurrentLanguageId);
+
+                entity.HasOne(u => u.Role)
+                      .WithMany(r => r.Users)
+                      .HasForeignKey(u => u.RoleId);
             });
 
             // Конфігурація для VocabularyExercise
@@ -102,7 +113,7 @@ namespace InteractiveLanguageLearning.Data
                 entity.Property(e => e.CorrectAnswer).HasColumnName("correct_answer").HasMaxLength(255);
                 entity.Property(e => e.Options).HasColumnName("options");
                 entity.Property(e => e.Explanation).HasColumnName("explanation");
-
+                entity.Property(e => e.ImagePath).HasColumnName("image_path").HasMaxLength(255); 
                 entity.HasOne(v => v.Topic)
                       .WithMany(t => t.VocabularyExercises)
                       .HasForeignKey(v => v.TopicId);

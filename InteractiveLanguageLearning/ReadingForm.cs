@@ -15,15 +15,26 @@ namespace InteractiveLanguageLearning
         private int _currentExerciseIndex = 0;
         private ReadingExercise[] _exercises = Array.Empty<ReadingExercise>();
 
-        public ReadingForm(Language language, User? user) : base(language, user)
+        public ReadingForm(Language language, User? user, int? topicId = null) : base(language, user)
         {
             InitializeComponent();
             _exerciseService = new ExerciseService();
-            LoadExercises();
-            LoadNextExercise();
-        }
+            LoadExercises(topicId);
 
-        private void LoadExercises()
+            if (_exercises.Length > 0)
+            {
+                LoadNextExercise();
+            }
+            else
+            {
+                MessageBox.Show("Не знайдено вправ з читання для обраної теми", "Інформація",
+                              MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.Close();
+            }
+        }
+        public ReadingForm(Language language, User? user) : this(language, user, null) { }
+
+        private void LoadExercises(int? topicId = null)
         {
             if (_language?.Sections == null) return;
 
@@ -33,12 +44,17 @@ namespace InteractiveLanguageLearning
                     .Where(s => s.Name == "Читання")
                     .SelectMany(s => s.Topics)
                     .ToList();
+                if (topicId.HasValue)
+                {
+                    topics = topics.Where(t => t.Id == topicId.Value).ToList();
+                }
 
                 _exercises = topics
                     .SelectMany(t => _exerciseService.GetReadingExercisesByTopic(t.Id))
                     .ToArray();
 
-                Console.WriteLine($"Loaded {_exercises.Length} reading exercises");
+                Console.WriteLine($"Завантажено {_exercises.Length} вправ з читання" +
+                                 (topicId.HasValue ? $" для теми ID: {topicId}" : ""));
             }
             catch (Exception ex)
             {
@@ -57,7 +73,12 @@ namespace InteractiveLanguageLearning
                 {
                     lblTitle.Text = _currentExercise.Title;
                     txtReadingText.Text = _currentExercise.TextContent;
+
+                    // Додаємо перенос на новий рядок для питання
                     lblQuestion.Text = _currentExercise.Question;
+                    lblQuestion.AutoSize = true;
+                    lblQuestion.MaximumSize = new Size(panelQuestion.Width - 20, 0); // Дозволяє автоматичний перенос
+
                     var options = _currentExercise.GetOptionsList();
                     for (int i = 0; i < options.Count && i < 4; i++)
                     {
@@ -110,33 +131,40 @@ namespace InteractiveLanguageLearning
             }
 
             bool isCorrect = selectedOption == _currentExercise.CorrectAnswer;
-            SaveProgress(_currentExercise.Id, ExerciseType.Reading, isCorrect);
-            ShowResult(isCorrect, selectedOption);
-
-            _currentExerciseIndex++;
-            LoadNextExercise();
-        }
-
-        private void ShowResult(bool isCorrect, string selectedOption)
-        {
-            string message;
-            MessageBoxIcon icon;
 
             if (isCorrect)
             {
-                message = $"Правильно!\n\n{_currentExercise.Explanation}";
-                icon = MessageBoxIcon.Information;
+                // Правильна відповідь - зберігаємо прогрес і переходимо до наступної вправи
+                SaveProgress(_currentExercise.Id, ExerciseType.Reading, true);
+
+                string message = $"Правильно!\n\n{_currentExercise.Explanation}";
+                MessageBox.Show(message, "Результат", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                _currentExerciseIndex++;
+                LoadNextExercise();
             }
             else
             {
-                message = $"Неправильно.\n\n" +
-                         $"Ваша відповідь: {selectedOption}\n" +
-                         $"Правильна відповідь: {_currentExercise.CorrectAnswer}\n\n" +
-                         $"{_currentExercise.Explanation}";
-                icon = MessageBoxIcon.Warning;
-            }
+                // Неправильна відповідь - показуємо помилку і залишаємо на цій же вправі
+                string message = $"Неправильно. Спробуйте ще раз!\n\n" +
+                               $"Підказка: {_currentExercise.Explanation}";
+                MessageBox.Show(message, "Результат", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-            MessageBox.Show(message, "Результат", MessageBoxButtons.OK, icon);
+                // Скидаємо вибір для нової спроби
+                ResetRadioButtons();
+                btnNext.Enabled = false;
+            }
+        }
+
+        private void ResetRadioButtons()
+        {
+            foreach (Control control in panelQuestion.Controls)
+            {
+                if (control is RadioButton radioButton)
+                {
+                    radioButton.Checked = false;
+                }
+            }
         }
 
         private string GetSelectedOption()
@@ -159,6 +187,16 @@ namespace InteractiveLanguageLearning
         private void txtReadingText_TextChanged(object sender, EventArgs e)
         {
             // Можна додати додаткову логіку, якщо потрібно
+        }
+
+        // Додатковий метод для обробки зміни розміру форми
+        private void ReadingForm_Resize(object sender, EventArgs e)
+        {
+            // Оновлюємо максимальну ширину для переносу тексту при зміні розміру форми
+            if (lblQuestion != null)
+            {
+                lblQuestion.MaximumSize = new Size(panelQuestion.Width - 20, 0);
+            }
         }
     }
 }

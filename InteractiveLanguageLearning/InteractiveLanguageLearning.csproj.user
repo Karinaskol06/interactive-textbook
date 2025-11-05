@@ -4,6 +4,9 @@
     <Compile Update="BaseExerciseForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="ExerciseEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="GrammarForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -20,6 +23,12 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="RegisterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="TeacherPanelForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="TopicForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="VocabularyForm.cs">

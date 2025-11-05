@@ -38,6 +38,12 @@ namespace InteractiveLanguageLearning.Models
         public List<GrammarExercise> GrammarExercises { get; set; } = new List<GrammarExercise>();
     }
 
+    public class TopicButtonTag
+    {
+        public Topic Topic { get; set; }
+        public Section Section { get; set; }
+    }
+
     public class User
     {
         public int Id { get; set; }
@@ -46,9 +52,19 @@ namespace InteractiveLanguageLearning.Models
         public string PasswordHash { get; set; }
         public int? CurrentLanguageId { get; set; }
         public DateTime CreatedAt { get; set; }
+        public int RoleId { get; set; } = 1;
         public Language CurrentLanguage { get; set; }
+        public UserRole Role { get; set; }
 
         public List<UserProgress> Progress { get; set; } = new List<UserProgress>();
+        public bool IsTeacher => Role?.Name == "teacher";
+    }
+
+    public class UserRole
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public List<User> Users { get; set; } = new List<User>();
     }
 
     public interface IExercise
@@ -62,6 +78,23 @@ namespace InteractiveLanguageLearning.Models
         List<string> GetOptionsList();
     }
 
+    public class ExerciseEditModel
+    {
+        public int Id { get; set; }
+        public int TopicId { get; set; }
+        public string Question { get; set; }
+        public string CorrectAnswer { get; set; }
+        public List<string> Options { get; set; } = new List<string>();
+        public string Explanation { get; set; }
+        public ExerciseType ExerciseType { get; set; }
+
+        // Додаткові поля для різних типів вправ
+        public string Title { get; set; }
+        public string TextContent { get; set; }
+        public string Example { get; set; }
+        public string ImagePath { get; set; }
+    }
+
     public class VocabularyExercise : IExercise
     {
         public int Id { get; set; }
@@ -70,6 +103,7 @@ namespace InteractiveLanguageLearning.Models
         public string CorrectAnswer { get; set; }
         public string Options { get; set; }
         public string Explanation { get; set; }
+        public string? ImagePath { get; set; }
         public Topic Topic { get; set; }
 
         public List<string> GetOptionsList()
@@ -110,7 +144,7 @@ namespace InteractiveLanguageLearning.Models
 
         public List<string> GetOptionsList()
         {
-            return new List<string>(Options.Split(','));
+            return Options?.Split(',')?.Select(opt => opt.Trim().Replace(" ", ", ")).ToList() ?? new List<string>();
         }
     }
 

@@ -29,8 +29,12 @@
         private void InitializeComponent()
         {
             FastReport.DataVisualization.Charting.ChartArea chartArea1 = new FastReport.DataVisualization.Charting.ChartArea();
+            FastReport.DataVisualization.Charting.Legend legend1 = new FastReport.DataVisualization.Charting.Legend();
+            FastReport.DataVisualization.Charting.Series series1 = new FastReport.DataVisualization.Charting.Series();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProgressForm));
             tabControl = new TabControl();
             tabPageGeneral = new TabPage();
+            chartProgress = new FastReport.DataVisualization.Charting.Chart();
             lblProgressPercentage = new Label();
             label5 = new Label();
             lblTotalScore = new Label();
@@ -40,7 +44,6 @@
             label3 = new Label();
             label2 = new Label();
             label1 = new Label();
-            chartProgress = new FastReport.DataVisualization.Charting.Chart();
             tabPageLanguages = new TabPage();
             dataGridViewLanguages = new DataGridView();
             colLanguage = new DataGridViewTextBoxColumn();
@@ -51,12 +54,9 @@
             progressBarGrammar = new ProgressBar();
             progressBarReading = new ProgressBar();
             progressBarVocabulary = new ProgressBar();
-            lblGrammarProgress = new Label();
-            label12 = new Label();
-            lblReadingProgress = new Label();
-            label9 = new Label();
-            lblVocabularyProgress = new Label();
-            label6 = new Label();
+            lblGrammar = new Label();
+            lblReading = new Label();
+            lblVocabulary = new Label();
             tabPageRecent = new TabPage();
             dataGridViewRecent = new DataGridView();
             colDate = new DataGridViewTextBoxColumn();
@@ -64,7 +64,6 @@
             colExercise = new DataGridViewTextBoxColumn();
             colStatus = new DataGridViewTextBoxColumn();
             colScore = new DataGridViewTextBoxColumn();
-            btnRefresh = new Button();
             btnExport = new Button();
             btnClose = new Button();
             tabControl.SuspendLayout();
@@ -92,6 +91,9 @@
             // 
             // tabPageGeneral
             // 
+            tabPageGeneral.BackColor = Color.FromArgb(245, 221, 201);
+            tabPageGeneral.BorderStyle = BorderStyle.FixedSingle;
+            tabPageGeneral.Controls.Add(chartProgress);
             tabPageGeneral.Controls.Add(lblProgressPercentage);
             tabPageGeneral.Controls.Add(label5);
             tabPageGeneral.Controls.Add(lblTotalScore);
@@ -101,13 +103,31 @@
             tabPageGeneral.Controls.Add(label3);
             tabPageGeneral.Controls.Add(label2);
             tabPageGeneral.Controls.Add(label1);
-            tabPageGeneral.Controls.Add(chartProgress);
             tabPageGeneral.Location = new Point(4, 32);
             tabPageGeneral.Name = "tabPageGeneral";
             tabPageGeneral.Size = new Size(802, 475);
             tabPageGeneral.TabIndex = 0;
             tabPageGeneral.Text = "Загальна статистика";
-            tabPageGeneral.UseVisualStyleBackColor = true;
+            // 
+            // chartProgress
+            // 
+            chartProgress.BackColor = Color.FromArgb(242, 153, 133);
+            chartArea1.BackImageTransparentColor = Color.Coral;
+            chartArea1.BorderColor = Color.DimGray;
+            chartArea1.Name = "ChartArea1";
+            chartProgress.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            chartProgress.Legends.Add(legend1);
+            chartProgress.Location = new Point(20, 208);
+            chartProgress.Name = "chartProgress";
+            series1.BackImageTransparentColor = Color.DimGray;
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            chartProgress.Series.Add(series1);
+            chartProgress.Size = new Size(760, 252);
+            chartProgress.TabIndex = 3;
+            chartProgress.Text = "chart1";
             // 
             // lblProgressPercentage
             // 
@@ -193,23 +213,6 @@
             label1.Text = "Загальна статистика";
             label1.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // chartProgress
-            // 
-            chartProgress.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            chartProgress.BackColor = Color.FromArgb(111, 207, 234);
-            chartProgress.BorderlineDashStyle = FastReport.DataVisualization.Charting.ChartDashStyle.Dash;
-            chartArea1.BackColor = Color.FromArgb(111, 207, 234);
-            chartArea1.BackGradientStyle = FastReport.DataVisualization.Charting.GradientStyle.TopBottom;
-            chartArea1.BackSecondaryColor = Color.White;
-            chartArea1.BorderColor = Color.BlanchedAlmond;
-            chartArea1.Name = "ChartArea1";
-            chartProgress.ChartAreas.Add(chartArea1);
-            chartProgress.Location = new Point(8, 221);
-            chartProgress.Name = "chartProgress";
-            chartProgress.Size = new Size(786, 251);
-            chartProgress.TabIndex = 0;
-            chartProgress.Text = "chart1";
-            // 
             // tabPageLanguages
             // 
             tabPageLanguages.Controls.Add(dataGridViewLanguages);
@@ -222,15 +225,20 @@
             // 
             // dataGridViewLanguages
             // 
+            dataGridViewLanguages.AllowUserToAddRows = false;
+            dataGridViewLanguages.AllowUserToDeleteRows = false;
             dataGridViewLanguages.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewLanguages.BackgroundColor = Color.FromArgb(245, 221, 201);
             dataGridViewLanguages.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewLanguages.Columns.AddRange(new DataGridViewColumn[] { colLanguage, colCompleted, colTotal, colProgress });
             dataGridViewLanguages.Dock = DockStyle.Fill;
             dataGridViewLanguages.Location = new Point(0, 0);
             dataGridViewLanguages.Name = "dataGridViewLanguages";
+            dataGridViewLanguages.RowHeadersVisible = false;
             dataGridViewLanguages.RowHeadersWidth = 51;
             dataGridViewLanguages.Size = new Size(802, 478);
             dataGridViewLanguages.TabIndex = 0;
+            dataGridViewLanguages.SelectionChanged += dataGridViewLanguages_SelectionChanged;
             // 
             // colLanguage
             // 
@@ -258,21 +266,18 @@
             // 
             // tabPageDetails
             // 
+            tabPageDetails.BackColor = Color.FromArgb(245, 221, 201);
             tabPageDetails.Controls.Add(progressBarGrammar);
             tabPageDetails.Controls.Add(progressBarReading);
             tabPageDetails.Controls.Add(progressBarVocabulary);
-            tabPageDetails.Controls.Add(lblGrammarProgress);
-            tabPageDetails.Controls.Add(label12);
-            tabPageDetails.Controls.Add(lblReadingProgress);
-            tabPageDetails.Controls.Add(label9);
-            tabPageDetails.Controls.Add(lblVocabularyProgress);
-            tabPageDetails.Controls.Add(label6);
+            tabPageDetails.Controls.Add(lblGrammar);
+            tabPageDetails.Controls.Add(lblReading);
+            tabPageDetails.Controls.Add(lblVocabulary);
             tabPageDetails.Location = new Point(4, 29);
             tabPageDetails.Name = "tabPageDetails";
             tabPageDetails.Size = new Size(802, 478);
             tabPageDetails.TabIndex = 2;
             tabPageDetails.Text = "Типи вправ";
-            tabPageDetails.UseVisualStyleBackColor = true;
             // 
             // progressBarGrammar
             // 
@@ -290,67 +295,41 @@
             // 
             // progressBarVocabulary
             // 
+            progressBarVocabulary.ForeColor = SystemColors.GradientActiveCaption;
             progressBarVocabulary.Location = new Point(39, 81);
             progressBarVocabulary.Name = "progressBarVocabulary";
             progressBarVocabulary.Size = new Size(179, 29);
             progressBarVocabulary.TabIndex = 8;
             // 
-            // lblGrammarProgress
+            // lblGrammar
             // 
-            lblGrammarProgress.AutoSize = true;
-            lblGrammarProgress.Location = new Point(295, 344);
-            lblGrammarProgress.Name = "lblGrammarProgress";
-            lblGrammarProgress.Size = new Size(165, 23);
-            lblGrammarProgress.TabIndex = 7;
-            lblGrammarProgress.Text = "lblGrammarProgress";
+            lblGrammar.AutoSize = true;
+            lblGrammar.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            lblGrammar.Location = new Point(39, 296);
+            lblGrammar.Name = "lblGrammar";
+            lblGrammar.Size = new Size(97, 23);
+            lblGrammar.TabIndex = 5;
+            lblGrammar.Text = "Граматика:";
             // 
-            // label12
+            // lblReading
             // 
-            label12.AutoSize = true;
-            label12.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 204);
-            label12.Location = new Point(39, 296);
-            label12.Name = "label12";
-            label12.Size = new Size(97, 23);
-            label12.TabIndex = 5;
-            label12.Text = "Граматика:";
+            lblReading.AutoSize = true;
+            lblReading.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            lblReading.Location = new Point(39, 168);
+            lblReading.Name = "lblReading";
+            lblReading.Size = new Size(81, 23);
+            lblReading.TabIndex = 2;
+            lblReading.Text = "Читання:";
             // 
-            // lblReadingProgress
+            // lblVocabulary
             // 
-            lblReadingProgress.AutoSize = true;
-            lblReadingProgress.Location = new Point(295, 216);
-            lblReadingProgress.Name = "lblReadingProgress";
-            lblReadingProgress.Size = new Size(155, 23);
-            lblReadingProgress.TabIndex = 4;
-            lblReadingProgress.Text = "lblReadingProgress";
-            // 
-            // label9
-            // 
-            label9.AutoSize = true;
-            label9.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 204);
-            label9.Location = new Point(39, 168);
-            label9.Name = "label9";
-            label9.Size = new Size(81, 23);
-            label9.TabIndex = 2;
-            label9.Text = "Читання:";
-            // 
-            // lblVocabularyProgress
-            // 
-            lblVocabularyProgress.AutoSize = true;
-            lblVocabularyProgress.Location = new Point(295, 87);
-            lblVocabularyProgress.Name = "lblVocabularyProgress";
-            lblVocabularyProgress.Size = new Size(177, 23);
-            lblVocabularyProgress.TabIndex = 1;
-            lblVocabularyProgress.Text = "lblVocabularyProgress";
-            // 
-            // label6
-            // 
-            label6.AutoSize = true;
-            label6.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 204);
-            label6.Location = new Point(39, 39);
-            label6.Name = "label6";
-            label6.Size = new Size(171, 23);
-            label6.TabIndex = 0;
-            label6.Text = "Словниковий запас:";
+            lblVocabulary.AutoSize = true;
+            lblVocabulary.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            lblVocabulary.Location = new Point(39, 39);
+            lblVocabulary.Name = "lblVocabulary";
+            lblVocabulary.Size = new Size(171, 23);
+            lblVocabulary.TabIndex = 0;
+            lblVocabulary.Text = "Словниковий запас:";
             // 
             // tabPageRecent
             // 
@@ -364,15 +343,20 @@
             // 
             // dataGridViewRecent
             // 
+            dataGridViewRecent.AllowUserToAddRows = false;
+            dataGridViewRecent.AllowUserToDeleteRows = false;
             dataGridViewRecent.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewRecent.BackgroundColor = Color.FromArgb(245, 221, 201);
             dataGridViewRecent.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewRecent.Columns.AddRange(new DataGridViewColumn[] { colDate, colType, colExercise, colStatus, colScore });
             dataGridViewRecent.Dock = DockStyle.Fill;
             dataGridViewRecent.Location = new Point(0, 0);
             dataGridViewRecent.Name = "dataGridViewRecent";
+            dataGridViewRecent.RowHeadersVisible = false;
             dataGridViewRecent.RowHeadersWidth = 51;
             dataGridViewRecent.Size = new Size(802, 478);
             dataGridViewRecent.TabIndex = 0;
+            dataGridViewRecent.SelectionChanged += dataGridViewRecent_SelectionChanged;
             // 
             // colDate
             // 
@@ -404,49 +388,41 @@
             colScore.MinimumWidth = 6;
             colScore.Name = "colScore";
             // 
-            // btnRefresh
-            // 
-            btnRefresh.FlatStyle = FlatStyle.Flat;
-            btnRefresh.Location = new Point(247, 517);
-            btnRefresh.Name = "btnRefresh";
-            btnRefresh.Size = new Size(94, 50);
-            btnRefresh.TabIndex = 1;
-            btnRefresh.Text = "Оновити";
-            btnRefresh.UseVisualStyleBackColor = true;
-            btnRefresh.Click += btnRefresh_Click;
-            // 
             // btnExport
             // 
+            btnExport.BackColor = Color.FromArgb(147, 191, 166);
             btnExport.FlatStyle = FlatStyle.Flat;
-            btnExport.Location = new Point(347, 517);
+            btnExport.Location = new Point(250, 517);
             btnExport.Name = "btnExport";
-            btnExport.Size = new Size(94, 50);
+            btnExport.Size = new Size(94, 43);
             btnExport.TabIndex = 1;
             btnExport.Text = "Експорт";
-            btnExport.UseVisualStyleBackColor = true;
+            btnExport.UseVisualStyleBackColor = false;
             btnExport.Click += btnExport_Click;
             // 
             // btnClose
             // 
+            btnClose.BackColor = Color.FromArgb(242, 82, 82);
             btnClose.FlatStyle = FlatStyle.Flat;
-            btnClose.Location = new Point(447, 517);
+            btnClose.Location = new Point(467, 517);
             btnClose.Name = "btnClose";
-            btnClose.Size = new Size(94, 50);
+            btnClose.Size = new Size(94, 43);
             btnClose.TabIndex = 1;
             btnClose.Text = "Закрити";
-            btnClose.UseVisualStyleBackColor = true;
+            btnClose.UseVisualStyleBackColor = false;
             btnClose.Click += btnClose_Click;
             // 
             // ProgressForm
             // 
             AutoScaleDimensions = new SizeF(9F, 23F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(810, 579);
+            BackColor = Color.FromArgb(245, 221, 201);
+            ClientSize = new Size(810, 572);
             Controls.Add(btnClose);
             Controls.Add(btnExport);
-            Controls.Add(btnRefresh);
             Controls.Add(tabControl);
             Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "ProgressForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "ProgressForm";
@@ -470,7 +446,6 @@
         private TabPage tabPageLanguages;
         private TabPage tabPageDetails;
         private TabPage tabPageRecent;
-        private FastReport.DataVisualization.Charting.Chart chartProgress;
         private Label lblProgressPercentage;
         private Label label5;
         private Label lblTotalScore;
@@ -485,23 +460,20 @@
         private DataGridViewTextBoxColumn colCompleted;
         private DataGridViewTextBoxColumn colTotal;
         private DataGridViewTextBoxColumn colProgress;
-        private Label lblGrammarProgress;
-        private Label label12;
-        private Label lblReadingProgress;
-        private Label label9;
-        private Label lblVocabularyProgress;
-        private Label label6;
+        private Label lblGrammar;
+        private Label lblReading;
+        private Label lblVocabulary;
         private DataGridView dataGridViewRecent;
         private DataGridViewTextBoxColumn colDate;
         private DataGridViewTextBoxColumn colType;
         private DataGridViewTextBoxColumn colExercise;
         private DataGridViewTextBoxColumn colStatus;
         private DataGridViewTextBoxColumn colScore;
-        private Button btnRefresh;
         private Button btnExport;
         private Button btnClose;
         private ProgressBar progressBarGrammar;
         private ProgressBar progressBarReading;
         private ProgressBar progressBarVocabulary;
+        private FastReport.DataVisualization.Charting.Chart chartProgress;
     }
 }

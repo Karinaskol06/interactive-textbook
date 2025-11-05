@@ -54,7 +54,7 @@
             // txtUsername
             // 
             txtUsername.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            txtUsername.BackColor = Color.FromArgb(217, 208, 178);
+            txtUsername.BackColor = Color.FromArgb(227, 219, 193);
             txtUsername.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 204);
             txtUsername.Location = new Point(57, 165);
             txtUsername.Name = "txtUsername";
@@ -75,7 +75,7 @@
             // txtPassword
             // 
             txtPassword.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            txtPassword.BackColor = Color.FromArgb(217, 208, 178);
+            txtPassword.BackColor = Color.FromArgb(227, 219, 193);
             txtPassword.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 204);
             txtPassword.Location = new Point(57, 264);
             txtPassword.Name = "txtPassword";
@@ -86,7 +86,7 @@
             // btnLogin
             // 
             btnLogin.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            btnLogin.BackColor = Color.FromArgb(114, 151, 118);
+            btnLogin.BackColor = Color.FromArgb(147, 191, 166);
             btnLogin.FlatStyle = FlatStyle.Popup;
             btnLogin.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 204);
             btnLogin.Location = new Point(57, 324);
@@ -100,7 +100,7 @@
             // btnCancel
             // 
             btnCancel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            btnCancel.BackColor = Color.FromArgb(200, 196, 193);
+            btnCancel.BackColor = Color.FromArgb(242, 212, 155);
             btnCancel.FlatStyle = FlatStyle.Popup;
             btnCancel.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 204);
             btnCancel.Location = new Point(103, 378);
@@ -135,7 +135,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(217, 208, 178);
+            BackColor = Color.FromArgb(227, 219, 193);
             ClientSize = new Size(800, 481);
             Controls.Add(pictureBox1);
             Controls.Add(label1);
@@ -145,6 +145,7 @@
             Controls.Add(txtUsername);
             Controls.Add(lblPassword);
             Controls.Add(txtPassword);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "LoginForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Вхід в систему";

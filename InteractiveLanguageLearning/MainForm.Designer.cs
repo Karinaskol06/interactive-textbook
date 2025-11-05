@@ -33,30 +33,30 @@
             cmbLanguages = new ComboBox();
             lblSelectLanguage = new Label();
             btnVocabulary = new Button();
-            btnReading = new Button();
-            btnGrammar = new Button();
             btnProgress = new Button();
             lblUserStats = new Label();
             btnLogin = new Button();
             btnRegister = new Button();
             panel1 = new Panel();
+            btnTeacherPanel = new Button();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
             // lblTitle
             // 
             lblTitle.AutoSize = true;
+            lblTitle.BackColor = Color.FromArgb(250, 240, 207);
             lblTitle.Font = new Font("Sitka Heading", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 204);
-            lblTitle.Location = new Point(102, 23);
+            lblTitle.Location = new Point(115, 23);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(736, 49);
+            lblTitle.Size = new Size(711, 49);
             lblTitle.TabIndex = 0;
-            lblTitle.Text = "Інтерактивний підручник для вивчення мов";
+            lblTitle.Text = "Інтерактивний посібник для вивчення мов";
             lblTitle.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // cmbLanguages
             // 
-            cmbLanguages.BackColor = Color.FromArgb(217, 204, 162);
+            cmbLanguages.BackColor = Color.FromArgb(250, 240, 207);
             cmbLanguages.DropDownHeight = 150;
             cmbLanguages.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbLanguages.FlatStyle = FlatStyle.Flat;
@@ -64,7 +64,7 @@
             cmbLanguages.FormattingEnabled = true;
             cmbLanguages.IntegralHeight = false;
             cmbLanguages.ItemHeight = 20;
-            cmbLanguages.Location = new Point(203, 41);
+            cmbLanguages.Location = new Point(291, 27);
             cmbLanguages.Name = "cmbLanguages";
             cmbLanguages.Size = new Size(222, 28);
             cmbLanguages.TabIndex = 2;
@@ -73,7 +73,7 @@
             // 
             lblSelectLanguage.AutoSize = true;
             lblSelectLanguage.Font = new Font("Bookman Old Style", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
-            lblSelectLanguage.Location = new Point(21, 42);
+            lblSelectLanguage.Location = new Point(109, 28);
             lblSelectLanguage.Name = "lblSelectLanguage";
             lblSelectLanguage.Size = new Size(156, 23);
             lblSelectLanguage.TabIndex = 1;
@@ -84,47 +84,22 @@
             btnVocabulary.BackColor = Color.FromArgb(114, 181, 178);
             btnVocabulary.FlatStyle = FlatStyle.Popup;
             btnVocabulary.Font = new Font("Sitka Small", 10.8F, FontStyle.Bold);
-            btnVocabulary.Location = new Point(65, 110);
+            btnVocabulary.Location = new Point(47, 80);
             btnVocabulary.Name = "btnVocabulary";
-            btnVocabulary.Size = new Size(338, 38);
+            btnVocabulary.Size = new Size(218, 91);
             btnVocabulary.TabIndex = 3;
-            btnVocabulary.Text = "Словниковий запас";
+            btnVocabulary.Text = "Перейти до тем";
             btnVocabulary.UseVisualStyleBackColor = false;
             btnVocabulary.Click += btnVocabulary_Click;
-            // 
-            // btnReading
-            // 
-            btnReading.BackColor = Color.FromArgb(181, 169, 114);
-            btnReading.FlatStyle = FlatStyle.Popup;
-            btnReading.Font = new Font("Sitka Small", 10.8F, FontStyle.Bold);
-            btnReading.Location = new Point(65, 157);
-            btnReading.Name = "btnReading";
-            btnReading.Size = new Size(338, 38);
-            btnReading.TabIndex = 4;
-            btnReading.Text = "Читання";
-            btnReading.UseVisualStyleBackColor = false;
-            btnReading.Click += btnReading_Click;
-            // 
-            // btnGrammar
-            // 
-            btnGrammar.BackColor = Color.FromArgb(111, 207, 234);
-            btnGrammar.FlatStyle = FlatStyle.Popup;
-            btnGrammar.Font = new Font("Sitka Small", 10.8F, FontStyle.Bold);
-            btnGrammar.Location = new Point(65, 205);
-            btnGrammar.Name = "btnGrammar";
-            btnGrammar.Size = new Size(338, 38);
-            btnGrammar.TabIndex = 5;
-            btnGrammar.Text = "Граматика";
-            btnGrammar.UseVisualStyleBackColor = false;
             // 
             // btnProgress
             // 
             btnProgress.BackColor = Color.FromArgb(118, 166, 166);
-            btnProgress.FlatStyle = FlatStyle.Flat;
+            btnProgress.FlatStyle = FlatStyle.Popup;
             btnProgress.Font = new Font("Sitka Small", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnProgress.Location = new Point(561, 346);
+            btnProgress.Location = new Point(47, 190);
             btnProgress.Name = "btnProgress";
-            btnProgress.Size = new Size(338, 40);
+            btnProgress.Size = new Size(218, 42);
             btnProgress.TabIndex = 6;
             btnProgress.Text = "Мій прогрес";
             btnProgress.UseVisualStyleBackColor = false;
@@ -134,7 +109,7 @@
             // 
             lblUserStats.AutoSize = true;
             lblUserStats.Font = new Font("Bookman Old Style", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
-            lblUserStats.Location = new Point(561, 106);
+            lblUserStats.Location = new Point(325, 80);
             lblUserStats.Name = "lblUserStats";
             lblUserStats.Size = new Size(133, 23);
             lblUserStats.TabIndex = 7;
@@ -142,10 +117,11 @@
             // 
             // btnLogin
             // 
-            btnLogin.BackColor = Color.FromArgb(38, 37, 35);
+            btnLogin.BackColor = Color.FromArgb(250, 221, 165);
+            btnLogin.BackgroundImageLayout = ImageLayout.Center;
             btnLogin.FlatStyle = FlatStyle.Flat;
             btnLogin.Font = new Font("Sitka Display", 13.7999992F, FontStyle.Regular, GraphicsUnit.Point, 204);
-            btnLogin.ForeColor = SystemColors.Info;
+            btnLogin.ForeColor = SystemColors.ControlText;
             btnLogin.Location = new Point(323, 419);
             btnLogin.Name = "btnLogin";
             btnLogin.Size = new Size(139, 44);
@@ -156,10 +132,10 @@
             // 
             // btnRegister
             // 
-            btnRegister.BackColor = Color.FromArgb(64, 34, 42);
+            btnRegister.BackColor = Color.FromArgb(242, 153, 133);
             btnRegister.FlatStyle = FlatStyle.Flat;
             btnRegister.Font = new Font("Sitka Display", 13.7999992F, FontStyle.Regular, GraphicsUnit.Point, 204);
-            btnRegister.ForeColor = SystemColors.Info;
+            btnRegister.ForeColor = SystemColors.ControlText;
             btnRegister.Location = new Point(478, 419);
             btnRegister.Name = "btnRegister";
             btnRegister.Size = new Size(139, 44);
@@ -171,16 +147,31 @@
             // panel1
             // 
             panel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panel1.BackColor = Color.FromArgb(250, 240, 207);
             panel1.BorderStyle = BorderStyle.Fixed3D;
-            panel1.Controls.Add(btnGrammar);
+            panel1.Controls.Add(btnTeacherPanel);
+            panel1.Controls.Add(lblUserStats);
             panel1.Controls.Add(cmbLanguages);
             panel1.Controls.Add(lblSelectLanguage);
-            panel1.Controls.Add(btnReading);
             panel1.Controls.Add(btnVocabulary);
-            panel1.Location = new Point(33, 106);
+            panel1.Controls.Add(btnProgress);
+            panel1.Location = new Point(157, 96);
             panel1.Name = "panel1";
-            panel1.Size = new Size(465, 280);
+            panel1.Size = new Size(626, 280);
             panel1.TabIndex = 10;
+            // 
+            // btnTeacherPanel
+            // 
+            btnTeacherPanel.FlatStyle = FlatStyle.Popup;
+            btnTeacherPanel.Font = new Font("Bookman Old Style", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            btnTeacherPanel.Location = new Point(325, 190);
+            btnTeacherPanel.Name = "btnTeacherPanel";
+            btnTeacherPanel.Size = new Size(236, 42);
+            btnTeacherPanel.TabIndex = 8;
+            btnTeacherPanel.Text = "Панель вчителя";
+            btnTeacherPanel.UseVisualStyleBackColor = true;
+            btnTeacherPanel.Visible = false;
+            btnTeacherPanel.Click += btnTeacherPanel_Click;
             // 
             // MainForm
             // 
@@ -190,14 +181,13 @@
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(940, 490);
-            Controls.Add(lblUserStats);
             Controls.Add(panel1);
             Controls.Add(btnRegister);
             Controls.Add(btnLogin);
-            Controls.Add(btnProgress);
             Controls.Add(lblTitle);
             DoubleBuffered = true;
             Font = new Font("Bookman Old Style", 9F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Інтерактивний підручник мов";
@@ -213,12 +203,11 @@
         private ComboBox cmbLanguages;
         private Label lblSelectLanguage;
         private Button btnVocabulary;
-        private Button btnReading;
-        private Button btnGrammar;
         private Button btnProgress;
         private Label lblUserStats;
         private Button btnLogin;
         private Button btnRegister;
         private Panel panel1;
+        private Button btnTeacherPanel;
     }
 }

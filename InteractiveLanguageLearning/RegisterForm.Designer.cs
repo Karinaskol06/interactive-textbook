@@ -56,7 +56,7 @@
             // 
             // txtUsername
             // 
-            txtUsername.BackColor = Color.FromArgb(217, 204, 162);
+            txtUsername.BackColor = Color.FromArgb(250, 221, 165);
             txtUsername.Location = new Point(234, 53);
             txtUsername.Name = "txtUsername";
             txtUsername.Size = new Size(192, 30);
@@ -73,7 +73,7 @@
             // 
             // txtEmail
             // 
-            txtEmail.BackColor = Color.FromArgb(217, 204, 162);
+            txtEmail.BackColor = Color.FromArgb(250, 221, 165);
             txtEmail.Location = new Point(234, 102);
             txtEmail.Name = "txtEmail";
             txtEmail.Size = new Size(192, 30);
@@ -90,7 +90,7 @@
             // 
             // txtPassword
             // 
-            txtPassword.BackColor = Color.FromArgb(217, 204, 162);
+            txtPassword.BackColor = Color.FromArgb(250, 221, 165);
             txtPassword.Location = new Point(234, 153);
             txtPassword.Name = "txtPassword";
             txtPassword.Size = new Size(192, 30);
@@ -108,7 +108,7 @@
             // 
             // txtConfirmPassword
             // 
-            txtConfirmPassword.BackColor = Color.FromArgb(217, 204, 162);
+            txtConfirmPassword.BackColor = Color.FromArgb(250, 221, 165);
             txtConfirmPassword.Location = new Point(234, 206);
             txtConfirmPassword.Name = "txtConfirmPassword";
             txtConfirmPassword.Size = new Size(192, 30);
@@ -117,7 +117,7 @@
             // 
             // btnRegister
             // 
-            btnRegister.BackColor = Color.FromArgb(114, 151, 118);
+            btnRegister.BackColor = Color.FromArgb(147, 191, 166);
             btnRegister.FlatStyle = FlatStyle.Flat;
             btnRegister.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 204);
             btnRegister.Location = new Point(218, 412);
@@ -130,7 +130,7 @@
             // 
             // btnCancel
             // 
-            btnCancel.BackColor = Color.FromArgb(240, 154, 69);
+            btnCancel.BackColor = Color.FromArgb(242, 82, 82);
             btnCancel.FlatStyle = FlatStyle.Flat;
             btnCancel.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 204);
             btnCancel.Location = new Point(494, 412);
@@ -143,6 +143,7 @@
             // 
             // panel1
             // 
+            panel1.BackColor = Color.FromArgb(250, 240, 207);
             panel1.BorderStyle = BorderStyle.Fixed3D;
             panel1.Controls.Add(txtPassword);
             panel1.Controls.Add(lblUsername);
@@ -160,10 +161,11 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Sitka Heading", 16.1999989F, FontStyle.Regular, GraphicsUnit.Point, 204);
-            label1.Location = new Point(316, 23);
+            label1.BackColor = Color.FromArgb(250, 240, 207);
+            label1.Font = new Font("Sitka Heading", 18F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            label1.Location = new Point(299, 23);
             label1.Name = "label1";
-            label1.Size = new Size(269, 39);
+            label1.Size = new Size(302, 43);
             label1.TabIndex = 11;
             label1.Text = "Форма для реєстрації";
             // 
@@ -180,6 +182,7 @@
             Controls.Add(btnCancel);
             Controls.Add(btnRegister);
             Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "RegisterForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Реєстрація в системі";

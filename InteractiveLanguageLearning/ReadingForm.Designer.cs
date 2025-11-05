@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ReadingForm));
             lblTitle = new Label();
             txtReadingText = new TextBox();
             lblQuestion = new Label();
@@ -47,10 +48,10 @@
             // lblTitle
             // 
             lblTitle.AutoSize = true;
-            lblTitle.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            lblTitle.Font = new Font("Sitka Text", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 204);
             lblTitle.Location = new Point(12, 21);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(163, 25);
+            lblTitle.Size = new Size(173, 26);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "Заголовок тексту";
             // 
@@ -59,6 +60,7 @@
             txtReadingText.BackColor = Color.FromArgb(224, 216, 188);
             txtReadingText.BorderStyle = BorderStyle.None;
             txtReadingText.Dock = DockStyle.Top;
+            txtReadingText.Font = new Font("Sitka Text", 10.1999989F, FontStyle.Regular, GraphicsUnit.Point, 204);
             txtReadingText.Location = new Point(0, 0);
             txtReadingText.Multiline = true;
             txtReadingText.Name = "txtReadingText";
@@ -73,7 +75,7 @@
             lblQuestion.AutoSize = true;
             lblQuestion.Location = new Point(19, 23);
             lblQuestion.Name = "lblQuestion";
-            lblQuestion.Size = new Size(77, 23);
+            lblQuestion.Size = new Size(84, 24);
             lblQuestion.TabIndex = 2;
             lblQuestion.Text = "Питання";
             // 
@@ -82,7 +84,7 @@
             radioOption1.AutoSize = true;
             radioOption1.Location = new Point(19, 174);
             radioOption1.Name = "radioOption1";
-            radioOption1.Size = new Size(131, 27);
+            radioOption1.Size = new Size(133, 28);
             radioOption1.TabIndex = 2;
             radioOption1.TabStop = true;
             radioOption1.Text = "radioButton1";
@@ -94,7 +96,7 @@
             radioOption2.AutoSize = true;
             radioOption2.Location = new Point(19, 220);
             radioOption2.Name = "radioOption2";
-            radioOption2.Size = new Size(131, 27);
+            radioOption2.Size = new Size(133, 28);
             radioOption2.TabIndex = 2;
             radioOption2.TabStop = true;
             radioOption2.Text = "radioButton1";
@@ -106,7 +108,7 @@
             radioOption3.AutoSize = true;
             radioOption3.Location = new Point(19, 269);
             radioOption3.Name = "radioOption3";
-            radioOption3.Size = new Size(131, 27);
+            radioOption3.Size = new Size(133, 28);
             radioOption3.TabIndex = 2;
             radioOption3.TabStop = true;
             radioOption3.Text = "radioButton1";
@@ -118,7 +120,7 @@
             radioOption4.AutoSize = true;
             radioOption4.Location = new Point(19, 316);
             radioOption4.Name = "radioOption4";
-            radioOption4.Size = new Size(131, 27);
+            radioOption4.Size = new Size(133, 28);
             radioOption4.TabIndex = 2;
             radioOption4.TabStop = true;
             radioOption4.Text = "radioButton1";
@@ -127,7 +129,7 @@
             // 
             // btnNext
             // 
-            btnNext.BackColor = Color.FromArgb(118, 166, 166);
+            btnNext.BackColor = Color.FromArgb(147, 191, 166);
             btnNext.Enabled = false;
             btnNext.FlatStyle = FlatStyle.Flat;
             btnNext.Location = new Point(794, 528);
@@ -140,7 +142,7 @@
             // 
             // btnBack
             // 
-            btnBack.BackColor = Color.FromArgb(235, 139, 68);
+            btnBack.BackColor = Color.FromArgb(242, 153, 133);
             btnBack.FlatStyle = FlatStyle.Flat;
             btnBack.Location = new Point(683, 528);
             btnBack.Name = "btnBack";
@@ -170,22 +172,24 @@
             // 
             // panelQuestion
             // 
+            panelQuestion.BackColor = Color.FromArgb(250, 240, 207);
             panelQuestion.BorderStyle = BorderStyle.FixedSingle;
             panelQuestion.Controls.Add(radioOption1);
             panelQuestion.Controls.Add(lblQuestion);
             panelQuestion.Controls.Add(radioOption2);
             panelQuestion.Controls.Add(radioOption3);
             panelQuestion.Controls.Add(radioOption4);
+            panelQuestion.Font = new Font("Sitka Text", 10.1999989F, FontStyle.Regular, GraphicsUnit.Point, 204);
             panelQuestion.Location = new Point(12, 63);
             panelQuestion.Name = "panelQuestion";
-            panelQuestion.Size = new Size(329, 516);
+            panelQuestion.Size = new Size(341, 516);
             panelQuestion.TabIndex = 3;
             // 
             // ReadingForm
             // 
             AutoScaleDimensions = new SizeF(9F, 23F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(224, 216, 188);
+            BackColor = Color.FromArgb(250, 237, 221);
             ClientSize = new Size(900, 591);
             Controls.Add(panelQuestion);
             Controls.Add(panelText);
@@ -194,6 +198,7 @@
             Controls.Add(btnNext);
             Controls.Add(lblTitle);
             Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "ReadingForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Читання";

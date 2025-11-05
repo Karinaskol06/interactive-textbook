@@ -37,9 +37,9 @@
             btnNext = new Button();
             lblProgress = new Label();
             panel1 = new Panel();
-            pictureBox1 = new PictureBox();
+            pbWordImage = new PictureBox();
             panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pbWordImage).BeginInit();
             SuspendLayout();
             // 
             // lblQuestion
@@ -102,7 +102,7 @@
             // 
             // btnNext
             // 
-            btnNext.BackColor = Color.OliveDrab;
+            btnNext.BackColor = Color.FromArgb(147, 191, 166);
             btnNext.FlatStyle = FlatStyle.Popup;
             btnNext.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 204);
             btnNext.ForeColor = SystemColors.ControlText;
@@ -126,6 +126,7 @@
             // 
             // panel1
             // 
+            panel1.BackColor = Color.FromArgb(250, 240, 207);
             panel1.BorderStyle = BorderStyle.FixedSingle;
             panel1.Controls.Add(btnNext);
             panel1.Controls.Add(lblProgress);
@@ -139,32 +140,33 @@
             panel1.Size = new Size(451, 494);
             panel1.TabIndex = 7;
             // 
-            // pictureBox1
+            // pbWordImage
             // 
-            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(469, 12);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(419, 494);
-            pictureBox1.SizeMode = PictureBoxSizeMode.CenterImage;
-            pictureBox1.TabIndex = 8;
-            pictureBox1.TabStop = false;
+            pbWordImage.Image = (Image)resources.GetObject("pbWordImage.Image");
+            pbWordImage.Location = new Point(469, 12);
+            pbWordImage.Name = "pbWordImage";
+            pbWordImage.Size = new Size(419, 494);
+            pbWordImage.SizeMode = PictureBoxSizeMode.Zoom;
+            pbWordImage.TabIndex = 8;
+            pbWordImage.TabStop = false;
             // 
             // VocabularyForm
             // 
             AutoScaleDimensions = new SizeF(9F, 23F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(224, 216, 188);
+            BackColor = Color.FromArgb(250, 240, 207);
             ClientSize = new Size(900, 518);
-            Controls.Add(pictureBox1);
+            Controls.Add(pbWordImage);
             Controls.Add(panel1);
             Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "VocabularyForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Словниковий запас";
             Click += radioOption_CheckedChanged;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pbWordImage).EndInit();
             ResumeLayout(false);
         }
 
@@ -178,6 +180,6 @@
         private Button btnNext;
         private Label lblProgress;
         private Panel panel1;
-        private PictureBox pictureBox1;
+        private PictureBox pbWordImage;
     }
 }

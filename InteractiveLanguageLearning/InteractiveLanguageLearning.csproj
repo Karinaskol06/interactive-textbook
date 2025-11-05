@@ -9,6 +9,116 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\Vocabulary\accommodation.png" />
+    <None Remove="Images\Vocabulary\appetizer.png" />
+    <None Remove="Images\Vocabulary\beverage.png" />
+    <None Remove="Images\Vocabulary\bland.png" />
+    <None Remove="Images\Vocabulary\bond.png" />
+    <None Remove="Images\Vocabulary\canFood.png" />
+    <None Remove="Images\Vocabulary\change.png" />
+    <None Remove="Images\Vocabulary\contact.png" />
+    <None Remove="Images\Vocabulary\friendship.png" />
+    <None Remove="Images\Vocabulary\godfather.png" />
+    <None Remove="Images\Vocabulary\itinerary.png" />
+    <None Remove="Images\Vocabulary\jelousy.png" />
+    <None Remove="Images\Vocabulary\journey.png" />
+    <None Remove="Images\Vocabulary\layoff.png" />
+    <None Remove="Images\Vocabulary\luggage.png" />
+    <None Remove="Images\Vocabulary\meal.png" />
+    <None Remove="Images\Vocabulary\mother.png" />
+    <None Remove="Images\Vocabulary\probation.png" />
+    <None Remove="Images\Vocabulary\promotion.png" />
+    <None Remove="Images\Vocabulary\relatives.png" />
+    <None Remove="Images\Vocabulary\reservation.png" />
+    <None Remove="Images\Vocabulary\seasonings.png" />
+    <None Remove="Images\Vocabulary\ticket.png" />
+    <None Remove="Images\Vocabulary\wheatProd.png" />
+    <None Remove="Images\Vocabulary\workDoc.png" />
+    <None Remove="Images\Vocabulary\workload.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Images\Vocabulary\accommodation.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Vocabulary\appetizer.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Vocabulary\beverage.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Vocabulary\bland.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Vocabulary\bond.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Vocabulary\canFood.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Vocabulary\change.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Vocabulary\contact.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Vocabulary\friendship.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Vocabulary\godfather.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Vocabulary\itinerary.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Vocabulary\jelousy.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Vocabulary\journey.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Vocabulary\layoff.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Vocabulary\luggage.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Vocabulary\meal.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Vocabulary\mother.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Vocabulary\probation.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Vocabulary\promotion.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Vocabulary\relatives.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Vocabulary\reservation.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Vocabulary\seasonings.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Vocabulary\ticket.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Vocabulary\wheatProd.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Vocabulary\workDoc.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Vocabulary\workload.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FastReport.DataVisualization" Version="2026.1.2" />
     <PackageReference Include="HIC.System.Windows.Forms.DataVisualization" Version="1.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.10" />
@@ -18,6 +128,8 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.10" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
+    <PackageReference Include="ScottPlot" Version="5.1.57" />
+    <PackageReference Include="ScottPlot.WinForms" Version="5.1.57" />
   </ItemGroup>
 
   <ItemGroup>
